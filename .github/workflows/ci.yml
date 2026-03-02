@@ -26,7 +26,18 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      has-deploy-secrets: ${{ steps.check-secrets.outputs.has-secrets }}
     steps:
+      - name: Check if deploy secrets are configured
+        id: check-secrets
+        run: |
+          if [ -n "${{ secrets.SERVER_IP }}" ]; then
+            echo "has-secrets=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-secrets=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -49,7 +60,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: ${{ secrets.SERVER_IP != '' }}
+    if: needs.build-and-push.outputs.has-deploy-secrets == 'true'
     steps:
       - name: Deploy to Azure VM
         uses: appleboy/ssh-action@v1.0.0
