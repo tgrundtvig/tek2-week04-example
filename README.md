@@ -1,4 +1,4 @@
-# TEK2 Example Project
+# TEK2 Week 04 Example
 
 A minimal Spring Boot application used as a reference for the [TEK2 deployment tutorial](https://github.com/tgrundtvig/TEK2-Student/blob/main/week-04-vms-linux-server/tutorials/own-project-azure.md).
 
